@@ -80,13 +80,20 @@ Write-Verbose "Starting $tag Image creation process..."
 $qaUser = & "whoami"
 $qaUser = $qaUser.ToUpper().Replace("STEELEYE\",'')
 
+$versionSKUs = @{
+    "WS2012R2" = "2012-R2";
+    "WS2016" = "2016";
+    "WS2019" = "2019";
+    "WS2022" = "2022";
+}
+
 # get parameters for template deployment
 $parameterFilePath = "$($templateURLBase)/azuredeploy.parameters.json"
 $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
 $parameters.adminPassword.value = "SIOS!5105?sios"
 $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
-$parameters.osVersion.value = $OSVersion.Replace('WS', '')
+$parameters.osVersion.value = $versionSKUs["$OSVersion"]
 $parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
 $parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
 $parameters.virtualMachineName.value = "$($resourcePrefix)"
@@ -99,6 +106,7 @@ $params = ""
 ($parameters | Get-Member -MemberType NoteProperty).Name | foreach {
     $params += "$($_)=$($parameters.$_.value) "
 }    
+$params = $params.Trim()
 
 $templateURL += "$($templateURLBase)/azuredeploy.json"
 
