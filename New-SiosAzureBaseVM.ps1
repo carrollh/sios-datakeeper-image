@@ -31,7 +31,7 @@ function Get-ParametersFromURL() {
         [Parameter(Mandatory=$False,Position=0)]
         [string] $URL
     )
-    return (Invoke-WebRequest -Uri $URL | ConvertFrom-Json).parameters
+    return ((Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json).parameters
 }
 
 function Get-ParametersFromFile() {
@@ -66,7 +66,7 @@ if(-Not $parametersAreValid) {
 ### Parameter validation - END
 
 ### MAIN ##############################################################################
-$templateURLBase = "https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/$($Branch)/azuredeploy.json"
+$templateURLBase = "https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/$($Branch)"
 
 if ( $SAP ) {
     $tag = "$($Product)v$($Version.Replace('.',''))forSAPon$($OSVersion.Replace('WS',''))-$($LicenseType)"
@@ -83,16 +83,16 @@ $qaUser = $qaUser.ToUpper().Replace("STEELEYE\",'')
 # get parameters for template deployment
 $parameterFilePath = "$($templateURLBase)/azuredeploy.parameters.json"
 $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
-$parameters = [System.Collections.ArrayList] (Get-ParametersFromURL -URL $parameterFilePath)
-$parameters.networkInterfaceName = "$($resourcePrefix)-NIC"
-$parameters.publicIpAddressName = "$($resourcePrefix)-IP"
-$parameters.virtualMachineName = "$($resourcePrefix)"
-$parameters.subscriptionId = (az account show | ConvertFrom-Json).id
-$parameters.adminPassword = "SIOS!5105?sios"
-$parameters.userData = "echo 'userdata goes here' > C:\Windows\Temp\userdata.out"
+$parameters = Get-ParametersFromURL -URL $parameterFilePath
+$parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
+$parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
+$parameters.virtualMachineName.value = "$($resourcePrefix)"
+$parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
+$parameters.adminPassword.value = "SIOS!5105?sios"
+$parameters.userData.value = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("echo 'userdata goes here' > C:\Windows\Temp\userdata.out"))
 
 # format for verbose output
-$parameters | Format-Table | Out-String -Stream | Write-Verbose
+$parameters | Out-String -Stream | Write-Verbose
 
 # format for azure cli acceptance
 $params = ""
@@ -102,9 +102,10 @@ $params = ""
 
 $templateURL += "$($templateURLBase)/azuredeploy.json"
 
-
 Write-Verbose $templateURL
+Write-Verbose $params
 
-$output = (az deployment group create --resource-group AzurePublishing --template-uri "$templateURL" --parameters $params | ConvertFrom-Json)
+Write-Verbose "az deployment group create --resource-group AzurePublishing --template-uri $templateURL --parameters $params"
+$output = az deployment group create --resource-group AzurePublishing --template-uri $templateURL --parameters $params
 
 return $output

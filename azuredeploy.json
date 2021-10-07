@@ -35,7 +35,7 @@
   },
   "variables": {
     "location": "eastus",
-    "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET']",
+    "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET')]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/PrivateSubnet1')]",
     "storageContainerUri": "https://azurepublishingblobstore.blob.core.windows.net/vhds/"
   },
@@ -124,7 +124,7 @@
             }
           }
         },
-        "userData": "[base64(parameters('userData'))]"
+        "userData": "[parameters('userData')]"
       }
     }
   ],
