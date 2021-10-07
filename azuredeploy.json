@@ -2,34 +2,34 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminPassword": {
+      "type": "secureString"
+    },
+    "adminUsername": {
+      "type": "string"
+    },
     "networkInterfaceName": {
       "type": "string"
     },
-    "publicIpAddressName": {
-      "type": "string"
+    "osVersion": {
+      "type": "string"  
     },
-    "publicIpAddressType": {
+    "publicIpAddressName": {
       "type": "string"
     },
     "publicIpAddressSku": {
       "type": "string"
     },
-    "virtualMachineName": {
+    "publicIpAddressType": {
       "type": "string"
     },
     "subscriptionId": {
       "type": "string"
     },
+    "virtualMachineName": {
+      "type": "string"
+    },
     "virtualMachineSize": {
-      "type": "string"
-    },
-    "adminUsername": {
-      "type": "string"
-    },
-    "adminPassword": {
-      "type": "secureString"
-    },
-    "userData": {
       "type": "string"
     }
   },
@@ -37,7 +37,8 @@
     "location": "eastus",
     "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET')]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/PrivateSubnet1')]",
-    "storageContainerUri": "https://azurepublishingblobstore.blob.core.windows.net/vhds/"
+    "storageContainerUri": "https://azurepublishingblobstore.blob.core.windows.net/vhds/",
+    "vmSku": "[concat(parameters('osVersion'), '-Datacenter')"
   },
   "resources": [
     {
@@ -100,7 +101,7 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
+            "sku": "[variables('vmSku')]",
             "version": "latest"
           }
         },

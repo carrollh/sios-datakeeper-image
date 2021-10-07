@@ -84,12 +84,12 @@ $qaUser = $qaUser.ToUpper().Replace("STEELEYE\",'')
 $parameterFilePath = "$($templateURLBase)/azuredeploy.parameters.json"
 $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
-$parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
-$parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
-$parameters.virtualMachineName.value = "$($resourcePrefix)"
-$parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
 $parameters.adminPassword.value = "SIOS!5105?sios"
-$parameters.userData.value = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("echo 'userdata goes here' > C:\Windows\Temp\userdata.out"))
+$parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
+$parameters.osVersion.value = $OSVersion.Replace('WS', '')
+$parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
+$parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
+$parameters.virtualMachineName.value = "$($resourcePrefix)"
 
 # format for verbose output
 $parameters | Out-String -Stream | Write-Verbose
