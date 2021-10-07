@@ -1,0 +1,9 @@
+{
+  "$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
+  "type": "QuickStart",
+  "itemDisplayName": "Automated SIOS Image Creation Template",
+  "description": "This template deploys a Windows VM with new Public IP Address. The templates uses conditions and logic functions to remove the need for nested deployments.",
+  "summary": "This template deploys a Windows VM with new Public IP Address. The templates uses conditions and logic functions to remove the need for nested deployments.",
+  "githubUsername": "carrollh",
+  "dateUpdated": "2021-10-08"
+}
