@@ -136,7 +136,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2021-04-01",
-      "name": "[concat(variables('virtualMachineName'),'/', 'ConfigureAndInstallDKCE')]",
+      "name": "[concat(parameters('virtualMachineName'),'/', 'ConfigureAndInstallDKCE')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
@@ -150,7 +150,7 @@
           "fileUris": [
             "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Install-DKCE.ps1')]"
           ],
-          "commandToExecute": "echo 'hello world'"
+          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command "& .\Install-DKCE.ps1 -IssSource ', 'setup-', parameters('dkVersion'), '.iss -SWVersion ', parameters('dkVersion'), ' -AMI;"')]"
         }
       }
     }
