@@ -8,6 +8,12 @@
     "adminUsername": {
       "type": "string"
     },
+    "branch": {
+      "type": "string"
+    },
+    "dkVersion": {
+      "type": "string"  
+    },
     "networkInterfaceName": {
       "type": "string"
     },
@@ -124,6 +130,27 @@
               "patchMode": "Manual"
             }
           }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2021-04-01",
+      "name": "[concat(variables('virtualMachineName'),'/', 'ConfigureAndInstallDKCE')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.7",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Install-DKCE.ps1')]"
+          ],
+          "commandToExecute": "echo 'hello world'"
         }
       }
     }

@@ -8,6 +8,9 @@
     "adminPassword": {
       "value": null
     },
+    "branch": {
+      "value": "main"
+    },
     "networkInterfaceName": {
       "value": ""
     },

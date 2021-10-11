@@ -11,7 +11,7 @@ Param(
     [String] $Version = '',
 
     [Parameter(Mandatory=$True, Position=2)]
-    [ValidateSet("WS2012R2","WS2016","WS2019","RHEL79")]
+    [ValidateSet("WS2012R2","WS2016","WS2019","WS2022","RHEL79")]
     [String] $OSVersion = '',
 
     [Parameter(Mandatory=$True, Position=3)]
@@ -91,29 +91,30 @@ $versionSKUs = @{
 $parameterFilePath = "$($templateURLBase)/azuredeploy.parameters.json"
 $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
+
 $parameters.adminPassword.value = "SIOS!5105?sios"
 $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
 $parameters.osVersion.value = $versionSKUs["$OSVersion"]
 $parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
 $parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
-$parameters.virtualMachineName.value = "$($resourcePrefix)"
+$parameters.virtualMachineName.value = $resourcePrefix.Replace('R2', '')
 
 # format for verbose output
 $parameters | Out-String -Stream | Write-Verbose
 
 # format for azure cli acceptance
-$params = ""
-($parameters | Get-Member -MemberType NoteProperty).Name | foreach {
-    $params += "$($_)=$($parameters.$_.value) "
-}    
-$params = $params.Trim()
+#$params = "`"" + ($parameters | ConvertTo-Json) + "`""
+$paramNames = ($parameters | Get-Member -Type NoteProperty).Name
+$paramNames
+$params = '{ \"' + $paramNames[0] + '\": {\"value\":\"' + $parameters.($paramNames[0]).value + '\"}'
+for($i = 1; $i -lt $paramNames.Count; $i++) {
+    $params += ', \"' + $paramNames[$i] + '\": {\"value\":\"' + $parameters.($paramNames[$i]).value + '\"}'
+}
+$params += ' }'
 
 $templateURL += "$($templateURLBase)/azuredeploy.json"
 
 Write-Verbose $templateURL
-Write-Verbose $params
 
 Write-Verbose "az deployment group create --resource-group AzurePublishing --template-uri $templateURL --parameters $params"
-$output = az deployment group create --resource-group AzurePublishing --template-uri $templateURL --parameters $params
-
-return $output
+az deployment group create --resource-group AzurePublishing --template-uri $templateURL --parameters $params
