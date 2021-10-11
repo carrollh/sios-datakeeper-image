@@ -93,6 +93,7 @@ $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
 
 $parameters.adminPassword.value = "SIOS!5105?sios"
+$parameters.branch.value = $Branch
 $parameters.dkVersion.value = $Version
 $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
 $parameters.osVersion.value = $versionSKUs["$OSVersion"]
@@ -101,12 +102,13 @@ $parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
 $parameters.virtualMachineName.value = $resourcePrefix.Replace('R2', '')
 
 # format for verbose output
-$parameters | Out-String -Stream | Write-Verbose
+$paramNames = ($parameters | Get-Member -Type NoteProperty).Name
+$paramNames | foreach {
+    $msg = "$_"
+    Write-Verbose ($msg.PadRight(22,' ') + ": " + $parameters.($_).value)
+}
 
 # format for azure cli acceptance
-#$params = "`"" + ($parameters | ConvertTo-Json) + "`""
-$paramNames = ($parameters | Get-Member -Type NoteProperty).Name
-$paramNames
 $params = '{ \"' + $paramNames[0] + '\": {\"value\":\"' + $parameters.($paramNames[0]).value + '\"}'
 for($i = 1; $i -lt $paramNames.Count; $i++) {
     $params += ', \"' + $paramNames[$i] + '\": {\"value\":\"' + $parameters.($paramNames[$i]).value + '\"}'
