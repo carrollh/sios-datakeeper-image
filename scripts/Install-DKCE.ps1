@@ -76,5 +76,5 @@ try {
     }
 }
 catch {
-    $_ | Write-AWSQuickStartException
+    $_
 }

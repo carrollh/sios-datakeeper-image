@@ -43,7 +43,7 @@
     "location": "eastus",
     "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET')]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/PrivateSubnet1')]",
-    "storageContainerUri": "https://azurepublishingblobstore.blob.core.windows.net/vhds/",
+    "storageContainerUri": "https://azurepublishingdisks.blob.core.windows.net/vhds/",
     "vmSku": "[concat(parameters('osVersion'), '-Datacenter')]"
   },
   "resources": [
