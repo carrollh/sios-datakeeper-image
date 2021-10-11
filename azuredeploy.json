@@ -48,6 +48,18 @@
   },
   "resources": [
     {
+      "name": "[parameters('publicIpAddressName')]",
+      "type": "Microsoft.Network/publicIpAddresses",
+      "apiVersion": "2019-02-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+      },
+      "sku": {
+        "name": "[parameters('publicIpAddressSku')]"
+      }
+    },
+    {
       "name": "[parameters('networkInterfaceName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2018-10-01",
@@ -70,18 +82,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "name": "[parameters('publicIpAddressName')]",
-      "type": "Microsoft.Network/publicIpAddresses",
-      "apiVersion": "2019-02-01",
-      "location": "[variables('location')]",
-      "properties": {
-        "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
-      },
-      "sku": {
-        "name": "[parameters('publicIpAddressSku')]"
       }
     },
     {
