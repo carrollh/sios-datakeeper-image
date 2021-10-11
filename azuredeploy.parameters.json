@@ -11,6 +11,9 @@
     "branch": {
       "value": "main"
     },
+    "dkVersion": {
+      "value": ""
+    },
     "networkInterfaceName": {
       "value": ""
     },

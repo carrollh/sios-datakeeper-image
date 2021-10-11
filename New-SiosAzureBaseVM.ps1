@@ -93,6 +93,7 @@ $resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
 
 $parameters.adminPassword.value = "SIOS!5105?sios"
+$parameters.dkVersion.value = $Version
 $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
 $parameters.osVersion.value = $versionSKUs["$OSVersion"]
 $parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
