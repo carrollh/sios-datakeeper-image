@@ -150,7 +150,7 @@
           "fileUris": [
             "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Install-DKCE.ps1')]"
           ],
-          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command \".\\Install-DKCE.ps1 -IssSource ', 'setup-', parameters('dkVersion'), '.iss -SWVersion ', parameters('dkVersion'), ' -AMI;\"')]"
+          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command \".\\Install-DKCE.ps1 -IssSource https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/setup-', parameters('dkVersion'), '.iss -SWVersion ', parameters('dkVersion'), ' -AMI;\"')]"
         }
       }
     }
