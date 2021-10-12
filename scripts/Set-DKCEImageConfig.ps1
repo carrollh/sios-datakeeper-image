@@ -2,7 +2,7 @@
 [CmdletBinding()]
 Param(
     [Parameter(Mandatory=$True, Position=0)]
-    [ValidateSet('WS2012R2','WS2016','WS2019','WS2022','RHEL79')]
+    [ValidateSet('2012','2016','2019','2022')]
     [String] $OSVersion = '',
 
     [Parameter(Mandatory=$True, Position=1)]
@@ -19,7 +19,7 @@ Try {
     Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Services\LanManServer\Parameters' -Name RestrictNullSessAccess -Value 0 | Out-File -Encoding ascii -FilePath $logFile -Append
 
     # Exclude DKCE Path from Defender
-    if(-Not ($OSVersion -like "WS2012*")) {
+    if(-Not ($OSVersion -like "2012")) {
         Set-MpPreference -ExclusionPath 'C:\Program Files(x86)\SIOS' | Out-File -Encoding ascii -FilePath $logFile -Append
     } 
 
