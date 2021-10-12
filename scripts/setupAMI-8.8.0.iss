@@ -48,4 +48,4 @@ Sel-1=1
 Result=1
 [{B00365F8-E4E0-11D5-8323-0050DA240D61}-SdFinishReboot-0]
 Result=6
-BootOption=3
+BootOption=0

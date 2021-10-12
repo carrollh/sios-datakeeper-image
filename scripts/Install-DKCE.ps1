@@ -71,8 +71,7 @@ try {
     }
 
     if ([System.IO.Path]::GetExtension($exeFile) -eq '.exe') {
-        & "$exeFile" /s /f1$issFile /f2C:\cfn\downloads\setup.log
-        #Start-Process -FilePath wusa.exe -ArgumentList $Destination,'/quiet','/norestart' -Wait
+        & "$exeFile" /s /w /f1$issFile /f2C:\cfn\downloads\setup.log | Out-Null # wait for setup to end
     } else {
         throw "Unsupported file extension"
     }
