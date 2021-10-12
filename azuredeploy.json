@@ -14,6 +14,9 @@
     "dkVersion": {
       "type": "string"  
     },
+    "licenseType": {
+      "type": "string"
+    },
     "networkInterfaceName": {
       "type": "string"
     },
@@ -151,7 +154,7 @@
             "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Install-DKCE.ps1')]",
             "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Set-DKCEImageConfig.ps1')]"
           ],
-          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command \".\\Install-DKCE.ps1 -IssSource https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/', ' -SWVersion ', parameters('dkVersion'), ' -AMI;', '.\\Set-DKCEImageConfig.ps1;\"')]"
+          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command \".\\Install-DKCE.ps1 -IssSource https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/', ' -SWVersion ', parameters('dkVersion'), ' -AMI;', '.\\Set-DKCEImageConfig.ps1 -OSVersion ', parameters('OSVersion'), ' -LicenseType ', parameters('licenseType'), ';\"')]"
         }
       }
     }
