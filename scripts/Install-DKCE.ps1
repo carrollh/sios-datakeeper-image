@@ -47,6 +47,8 @@ try {
     $tries = 5
     while ($tries -ge 1) {
         try {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
             Write-Verbose "Trying to download from $exeUrl"
             (New-Object System.Net.WebClient).DownloadFile($exeUrl,$exeFile)
 
