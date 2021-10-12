@@ -95,6 +95,7 @@ $parameters = Get-ParametersFromURL -URL $parameterFilePath
 $parameters.adminPassword.value = "SIOS!5105?sios"
 $parameters.branch.value = $Branch
 $parameters.dkVersion.value = $Version
+$parameters.licenseType.value = $LicenseType
 $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
 $parameters.osVersion.value = $versionSKUs["$OSVersion"]
 $parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
