@@ -32,7 +32,7 @@ Try {
 
     # Create Shortcut to DKCE on Desktop
     $WshShell = New-Object -comObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut("C:\Users\$($env:username)\Desktop\DataKeeper.lnk")
+    $Shortcut = $WshShell.CreateShortcut("C:\Users\siosadmin\Desktop\DataKeeper.lnk")
     $Shortcut.TargetPath = 'C:\Program Files (x86)\SIOS\DataKeeper\DataKeeper.msc'
     $Shortcut.Save()
 
