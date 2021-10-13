@@ -10,6 +10,8 @@ Param(
     [String] $LicenseType = ''
 )
 
+New-Item -Type Directory -Path C:\cfn\logs
+
 $logFile = "C:\cfn\logs\Set-DKCEImageConfig.ps1.txt"
 "START Set-DKCEImageConfig.ps1" | Out-File -Encoding ascii -FilePath $logFile
 
