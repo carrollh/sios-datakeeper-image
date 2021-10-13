@@ -33,16 +33,6 @@ Try {
     $sys.AutomaticManagedPagefile = $false
     $sys.put() | Out-File -Encoding ascii -FilePath $logFile -Append
 
-    # Create Shortcut to DKCE on Desktop
-    $WshShell = New-Object -comObject WScript.Shell
-    $shortcutPath = 'C:\Users\siosadmin\Desktop'
-    if(-Not (Test-Path -Path $shortcutPath)) {
-        New-Item -Type Directory -Path $shortcutPath
-    }
-    $Shortcut = $WshShell.CreateShortcut("$($shortcutPath)\DataKeeper.lnk")
-    $Shortcut.TargetPath = 'C:\Program Files (x86)\SIOS\DataKeeper\DataKeeper.msc'
-    $Shortcut.Save()
-
     # Set Instance Storage Volume Pagefile to System Managed
     Set-WmiInstance -Class Win32_PageFileSetting -Arguments @{name='D:\pagefile.sys'; InitialSize = 0; MaximumSize = 0} -EnableAllPrivileges | Out-File -Encoding ascii -FilePath $logFile -Append
 
