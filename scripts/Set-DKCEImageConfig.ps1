@@ -10,9 +10,12 @@ Param(
     [String] $LicenseType = ''
 )
 
-New-Item -Type Directory -Path C:\cfn\logs
+$logPath = 'C:\cfn\logs'
+if(-Not (Test-Path -Path $logPath)) {
+    New-Item -Type Directory -Path $logPath
+}
 
-$logFile = "C:\cfn\logs\Set-DKCEImageConfig.ps1.txt"
+$logFile = "$($logPath)\Set-DKCEImageConfig.ps1.txt"
 "START Set-DKCEImageConfig.ps1" | Out-File -Encoding ascii -FilePath $logFile
 
 Try {
@@ -32,7 +35,11 @@ Try {
 
     # Create Shortcut to DKCE on Desktop
     $WshShell = New-Object -comObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut("C:\Users\siosadmin\Desktop\DataKeeper.lnk")
+    $shortcutPath = 'C:\Users\siosadmin\Desktop'
+    if(-Not (Test-Path -Path $shortcutPath)) {
+        New-Item -Type Directory -Path $shortcutPath
+    }
+    $Shortcut = $WshShell.CreateShortcut("$($shortcutPath)\DataKeeper.lnk")
     $Shortcut.TargetPath = 'C:\Program Files (x86)\SIOS\DataKeeper\DataKeeper.msc'
     $Shortcut.Save()
 
