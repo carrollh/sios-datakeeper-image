@@ -89,7 +89,7 @@ $versionSKUs = @{
 
 # get parameters for template deployment
 $parameterFilePath = "$($templateURLBase)/azuredeploy.parameters.json"
-$resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
+$resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion.Replace('R2', ''))"
 $parameters = Get-ParametersFromURL -URL $parameterFilePath
 
 $parameters.adminPassword.value = "SIOS!5105?sios"
@@ -100,7 +100,7 @@ $parameters.networkInterfaceName.value = "$($resourcePrefix)-NIC"
 $parameters.osVersion.value = $versionSKUs["$OSVersion"]
 $parameters.publicIpAddressName.value = "$($resourcePrefix)-IP"
 $parameters.subscriptionId.value = (az account show | ConvertFrom-Json).id
-$parameters.virtualMachineName.value = $resourcePrefix.Replace('R2', '')
+$parameters.virtualMachineName.value = $resourcePrefix
 
 # format for verbose output
 $paramNames = ($parameters | Get-Member -Type NoteProperty).Name
