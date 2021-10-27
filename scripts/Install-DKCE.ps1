@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$False)]
-    [string]$IssSource = 'https://quickstart-sios-qa.s3.amazonaws.com/master/iss/',
+    [string]$IssSource = 'https://quickstart-sios-amis.s3.amazonaws.com/main/iss/',
 
     [Parameter(Mandatory=$False)]
-    [string]$SWVersion = '8.8.0',
+    [string]$SWVersion = '8.8.1',
 
     [Parameter(Mandatory=$False)]
     [Switch]$AMI = $False
@@ -15,6 +15,7 @@ $exeUrls = [ordered]@{
     '8.7.1' = '8.7.1/DataKeeperv8.7.1-598277/DK-8.7.1-Setup.exe';
     '8.7.2' = '8.7.2/DataKeeperv8.7.2-965453/DK-8.7.2-Setup.exe';
     '8.8.0' = '8.8.0/DataKeeperv8.8.0-1252298/DK-8.8.0-Setup.exe';
+    '8.8.1' = '8.8.1/DataKeeperv8.8.1-1442260/DK-8.8.1-Setup.exe';
 }
 
 $exeSource = 'http://e512b7db7365eaa2f93b-44b251abad247bc1e9143294cbaa102a.r50.cf5.rackcdn.com/windows/SIOS_DataKeeper_Windows_en_'

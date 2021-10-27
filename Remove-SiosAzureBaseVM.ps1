@@ -27,8 +27,8 @@ Param(
 )
 
 ### MAIN ##############################################################################
-$resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion)"
-$vmName = $resourcePrefix.Replace('R2', '')
+$resourcePrefix = "$($Product)v$($Version.Replace('.',''))-$($OSVersion.Replace('R2', ''))"
+$vmName = $resourcePrefix
 $nicName = "$($resourcePrefix)-NIC"
 $ipName = "$($resourcePrefix)-IP"
 $blob = "$($vmName)-C.vhd"
