@@ -19,7 +19,7 @@ Param(
     [String] $LicenseType = '',
 
     [Parameter(Mandatory=$False)]
-    [ValidateSet('master','test','develop')]
+    [ValidateSet('main','test','develop')]
     [String] $Branch = 'main',
 
     [Parameter(Mandatory=$False)]
@@ -31,6 +31,7 @@ function Get-ParametersFromURL() {
         [Parameter(Mandatory=$False,Position=0)]
         [string] $URL
     )
+    Write-Verbose "Downloading $URL"
     return ((Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json).parameters
 }
 
