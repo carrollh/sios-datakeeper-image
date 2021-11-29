@@ -2,44 +2,66 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminPassword": {
+      "type": "secureString"
+    },
+    "adminUsername": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "dkVersion": {
+      "type": "string"  
+    },
+    "licenseType": {
+      "type": "string"
+    },
     "networkInterfaceName": {
       "type": "string"
     },
-    "publicIpAddressName": {
-      "type": "string"
+    "osVersion": {
+      "type": "string"  
     },
-    "publicIpAddressType": {
+    "publicIpAddressName": {
       "type": "string"
     },
     "publicIpAddressSku": {
       "type": "string"
     },
-    "virtualMachineName": {
+    "publicIpAddressType": {
       "type": "string"
     },
     "subscriptionId": {
       "type": "string"
     },
+    "virtualMachineName": {
+      "type": "string"
+    },
     "virtualMachineSize": {
-      "type": "string"
-    },
-    "adminUsername": {
-      "type": "string"
-    },
-    "adminPassword": {
-      "type": "secureString"
-    },
-    "userData": {
       "type": "string"
     }
   },
   "variables": {
     "location": "eastus",
-    "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET']",
+    "vnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/AzurePublishing/providers/Microsoft.Network/virtualNetworks/AzurePublishing-VNET')]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/PrivateSubnet1')]",
-    "storageContainerUri": "https://azurepublishingblobstore.blob.core.windows.net/vhds/"
+    "storageContainerUri": "https://azurepublishingdisks.blob.core.windows.net/vhds/",
+    "vmSku": "[concat(parameters('osVersion'), '-Datacenter')]"
   },
   "resources": [
+    {
+      "name": "[parameters('publicIpAddressName')]",
+      "type": "Microsoft.Network/publicIpAddresses",
+      "apiVersion": "2019-02-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+      },
+      "sku": {
+        "name": "[parameters('publicIpAddressSku')]"
+      }
+    },
     {
       "name": "[parameters('networkInterfaceName')]",
       "type": "Microsoft.Network/networkInterfaces",
@@ -66,18 +88,6 @@
       }
     },
     {
-      "name": "[parameters('publicIpAddressName')]",
-      "type": "Microsoft.Network/publicIpAddresses",
-      "apiVersion": "2019-02-01",
-      "location": "[variables('location')]",
-      "properties": {
-        "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
-      },
-      "sku": {
-        "name": "[parameters('publicIpAddressSku')]"
-      }
-    },
-    {
       "name": "[parameters('virtualMachineName')]",
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2021-03-01",
@@ -100,7 +110,7 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
+            "sku": "[variables('vmSku')]",
             "version": "latest"
           }
         },
@@ -123,8 +133,29 @@
               "patchMode": "Manual"
             }
           }
-        },
-        "userData": "[base64(parameters('userData'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2021-04-01",
+      "name": "[concat(parameters('virtualMachineName'),'/', 'ConfigureAndInstallDKCE')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.7",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Install-DKCE.ps1')]",
+            "[concat('https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/Set-DKCEImageConfig.ps1')]"
+          ],
+          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -Command \".\\Install-DKCE.ps1 -IssSource https://raw.githubusercontent.com/carrollh/sios-datakeeper-image/', parameters('branch'), '/scripts/', ' -SWVersion ', parameters('dkVersion'), ' -AMI;', '.\\Set-DKCEImageConfig.ps1 -OSVersion ', parameters('OSVersion'), ' -LicenseType ', parameters('licenseType'), ';\"')]"
+        }
       }
     }
   ],

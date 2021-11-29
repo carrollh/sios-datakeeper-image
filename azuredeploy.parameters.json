@@ -2,35 +2,44 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "networkInterfaceName": {
-      "value": ""
-    },
-    "publicIpAddressName": {
-      "value": ""
-    },
-    "publicIpAddressType": {
-      "value": "Dynamic"
-    },
-    "publicIpAddressSku": {
-      "value": "Basic"
-    },
-    "virtualMachineName": {
-      "value": ""
-    },
-    "subscriptionId": {
-      "value": ""
-    },
-    "virtualMachineSize": {
-      "value": "Standard_DS1_v2"
-    },
     "adminUsername": {
       "value": "siosadmin"
     },
     "adminPassword": {
       "value": null
     },
-    "userData": {
+    "branch": {
+      "value": "main"
+    },
+    "dkVersion": {
       "value": ""
+    },
+    "licenseType": {
+      "value": ""
+    },
+    "networkInterfaceName": {
+      "value": ""
+    },
+    "osVersion": {
+      "value": ""
+    },
+    "publicIpAddressName": {
+      "value": ""
+    },
+    "publicIpAddressSku": {
+      "value": "Basic"
+    },
+    "publicIpAddressType": {
+      "value": "Dynamic"
+    },
+    "subscriptionId": {
+      "value": ""
+    },
+    "virtualMachineName": {
+      "value": ""
+    },
+    "virtualMachineSize": {
+      "value": "Standard_DS1_v2"
     }
   }
 }
