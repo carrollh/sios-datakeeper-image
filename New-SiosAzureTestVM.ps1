@@ -2,9 +2,9 @@
 .Description
 Simple deployment script for a VM into the AzurePublishing resource group.
 .EXAMPLE
-PS> .\New-SiosAzureBaseVM.ps1 -Product DKCE -Version 8.8.2 -OSVersion WS2012R2 -LicenseType BYOL -Verbose
+PS> .\New-SiosAzureTestVM.ps1 -Product DKCE -Version 8.8.2 -OSVersion WS2012R2 -LicenseType BYOL -Verbose
 .EXAMPLE
-PS> .\New-SiosAzureBaseVM.ps1 -Product DKCE -Version 8.8.2 -OSVersion WS2019 -LicenseType PAYG -Verbose -SAP
+PS> .\New-SiosAzureTestVM.ps1 -Product DKCE -Version 8.8.2 -OSVersion WS2019 -LicenseType PAYG -Verbose
 .SYNOPSIS
 Used to deploy and configure VM that will become a new version of one of SIOS' Azure Marketplace VM offerings.
 #>
